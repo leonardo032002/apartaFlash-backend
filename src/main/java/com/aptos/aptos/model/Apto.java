@@ -42,5 +42,15 @@ public class Apto {
     
     //asociar recibo con cliente y cliente con apto para que no se vea tan abultado
 
-       
+           public boolean isDisponible() {
+        for (Cliente cliente : clientes) {
+            for (Recibo recibo : cliente.getRecibos()) {
+                if (!recibo.isVencido()) {
+                    return false; // Si hay un recibo no vencido, el apto no está disponible
+                }
+            }
+        }
+        return true; // Si no hay clientes o todos los recibos están vencidos, el apto está disponible
+    }
+    // 
 }

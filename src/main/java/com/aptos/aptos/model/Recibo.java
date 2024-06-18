@@ -74,5 +74,9 @@ public class Recibo {
             return "recibo no pagado";
         }
     }
+          public boolean isVencido() {
+        return new Date().after(this.fechaVencimiento);
+    }
+     
 
 }
