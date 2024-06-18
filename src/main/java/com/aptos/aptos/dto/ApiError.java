@@ -7,6 +7,7 @@ package com.aptos.aptos.dto;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -16,9 +17,11 @@ import lombok.RequiredArgsConstructor;
  */
 @Getter
 @RequiredArgsConstructor
+@Builder
 public class ApiError {
     private final LocalDateTime timestamp = LocalDateTime.now();
+    private final String code;
     private final String message;
-    private final String debugMessage;
-    private final List<String> debugDetail;
+    private final String exception;
+    //private final List<String> debugDetail;
 }
