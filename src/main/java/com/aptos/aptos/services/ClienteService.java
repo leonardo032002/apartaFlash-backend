@@ -4,6 +4,7 @@
  */
 package com.aptos.aptos.services;
 
+import com.aptos.aptos.exception.CedulaExisteException;
 import com.aptos.aptos.model.Apto;
 import com.aptos.aptos.model.Cliente;
 import com.aptos.aptos.repositories.AptoRepository;
@@ -39,7 +40,7 @@ public class ClienteService {
         if (cedulaExistente) {
             System.out.println("cedula existe");
             // La cédula ya existe, maneja la situación de acuerdo a tus necesidades
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: La cédula ya existe. No se puede guardar el cliente.");
+           throw new CedulaExisteException("La cedula existe");
 
         } else {
             // La cédula no existe, puedes guardar el cliente
