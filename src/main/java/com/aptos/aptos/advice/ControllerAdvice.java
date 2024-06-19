@@ -9,6 +9,8 @@ import com.aptos.aptos.exception.CedulaExisteException;
 import com.aptos.aptos.exception.MalformedProjectNameException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -30,4 +32,19 @@ public class ControllerAdvice {
     ApiError error = ApiError.builder().code("a-101").message(ex.getMessage()).exception("MalformedProjectNameException").build();
     return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
+    
+            @ExceptionHandler(value = HttpMessageNotReadableException.class)
+    public ResponseEntity<ApiError> HttpMessageNotReadableExceptionHandler(HttpMessageNotReadableException ex){
+    ApiError error = ApiError.builder().code("a-102").message("Debes colocar numeros enteros no letras, no decimales").exception("HttpMessageNotReadableException").build();
+    return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+      @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ApiError> HttpRequestMethodNotSupportedExceptionHandler(HttpRequestMethodNotSupportedException ex) {
+        ApiError error = ApiError.builder().code("a-103").message("El metodo no es compatible con la ruta")
+                .exception("NoResourceFoundException")
+                .build();
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+      
+    }
 }
+
