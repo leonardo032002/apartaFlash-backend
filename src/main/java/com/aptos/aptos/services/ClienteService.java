@@ -42,11 +42,11 @@ public class ClienteService {
             // La cédula ya existe, maneja la situación de acuerdo a tus necesidades
            throw new CedulaExisteException("La cedula existe");
 
-        } else {
+        } 
             // La cédula no existe, puedes guardar el cliente
             clienteRepository.save(c);
             return ResponseEntity.status(HttpStatus.CREATED).body("Cliente guardado exitosamente.");
-        }
+        
 
     }
 

@@ -7,6 +7,7 @@ package com.aptos.aptos.advice;
 import com.aptos.aptos.dto.ApiError;
 import com.aptos.aptos.exception.CedulaExisteException;
 import com.aptos.aptos.exception.MalformedProjectNameException;
+import java.time.format.DateTimeParseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -21,11 +22,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ControllerAdvice {
   
-    @ExceptionHandler(value = CedulaExisteException.class)
-    public ResponseEntity<ApiError> CedulaExisteExceptionHandler(CedulaExisteException ex){
-    ApiError error = ApiError.builder().code("a-100").message(ex.getMessage()).exception("CedulaExisteException").build();
-    return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-    }
+//    @ExceptionHandler(value = CedulaExisteException.class)
+//    public ResponseEntity<ApiError> CedulaExisteExceptionHandler(CedulaExisteException ex){
+//    ApiError error = ApiError.builder().code("a-100").message(ex.getMessage()).exception("CedulaExisteException").build();
+//    return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+//    }
     
         @ExceptionHandler(value = MalformedProjectNameException.class)
     public ResponseEntity<ApiError> MalformedProjectNameExceptionHandler(MalformedProjectNameException ex){
@@ -45,6 +46,14 @@ public class ControllerAdvice {
                 .build();
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
       
+    }
+    
+        @ExceptionHandler(value = DateTimeParseException.class)
+    public ResponseEntity<ApiError> MissingServletRequestParameterExceptionHandler(DateTimeParseException ex) {
+        ApiError error = ApiError.builder().code("a-104").message("El formato de fecha no coincide con el esperado 'yyyy-MM-dd'")
+                .exception("MissingServletRequestParameterException")
+                .build();
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST); 
     }
 }
 
