@@ -38,6 +38,7 @@ public class Apto {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String nombre;
+    private String descripcion;
     //para usar solo la fecha
     
     //asociar recibo con cliente y cliente con apto para que no se vea tan abultado
