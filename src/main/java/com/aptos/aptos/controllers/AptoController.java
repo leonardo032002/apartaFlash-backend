@@ -4,6 +4,7 @@
  */
 package com.aptos.aptos.controllers;
 
+import com.aptos.aptos.dto.AptoDto;
 import com.aptos.aptos.model.Apto;
 import com.aptos.aptos.services.AptoService;
 import java.util.List;
@@ -54,5 +55,11 @@ public class AptoController {
     public ResponseEntity<Boolean> deleteOne(@PathVariable Long id){
         aptoService.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+    
+        @GetMapping("/todos")
+    public ResponseEntity<List<AptoDto>> obtenerTodos() {
+        List<AptoDto> pedidos = aptoService.obtenerPedidosNoPagados();
+        return new ResponseEntity<>(pedidos, HttpStatus.OK);
     }
 }
