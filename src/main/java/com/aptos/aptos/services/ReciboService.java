@@ -8,6 +8,7 @@ import com.aptos.aptos.model.Cliente;
 import com.aptos.aptos.model.Recibo;
 import com.aptos.aptos.repositories.ReciboRepository;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,25 +18,23 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ReciboService {
-    
+
     @Autowired
     private ReciboRepository reciboRepository;
-    
-  
-    
-    public List<Recibo> getAll(){
+
+    public List<Recibo> getAll() {
         return reciboRepository.findAll();
     }
-    
-    public Recibo getById(Long id){
+
+    public Recibo getById(Long id) {
         return reciboRepository.getReferenceById(id);
     }
-    
-    public void save(Recibo r){
+
+    public void save(Recibo r) {
         reciboRepository.save(r);
     }
-    
-    public void delete (Long id){
+
+    public void delete(Long id) {
         reciboRepository.deleteById(id);
     }
 
@@ -43,6 +42,33 @@ public class ReciboService {
         Long totalGenerado = reciboRepository.calcularTotalGenerado();
         System.out.println("Cantidad total generada en los recibos: " + totalGenerado);
     }
-    
-    
+
+    public Recibo actualizarRecibo(Long id, Recibo reciboActualizado) {
+        Optional<Recibo> reciboOptional = reciboRepository.findById(id);
+
+        if (reciboOptional.isPresent()) {
+            Recibo reciboExistente = reciboOptional.get();
+            reciboExistente.setFechaGenerado(reciboActualizado.getFechaGenerado());
+            reciboExistente.setFechaVencimiento(reciboActualizado.getFechaVencimiento());
+            reciboExistente.setPagado(reciboActualizado.getPagado());
+            reciboExistente.setPrecio(reciboActualizado.getPrecio());
+            reciboExistente.setCliente(reciboActualizado.getCliente());
+           
+
+            return reciboRepository.save(reciboExistente);
+        } else {
+            throw new RuntimeException("Recibo no encontrado con el ID: " + id);
+        }
+    }
+
+    public List<Recibo> getPendingRecibos() {
+        return reciboRepository.findPendingRecibos();
+    }
+  
+  
+
+   
+
+      
+
 }

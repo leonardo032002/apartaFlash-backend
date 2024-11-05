@@ -16,5 +16,5 @@ import lombok.Data;
 public class AptoDto {
     private long id;
     private String nombre;
-    private String descripcion;
+    private int codigo;
 }

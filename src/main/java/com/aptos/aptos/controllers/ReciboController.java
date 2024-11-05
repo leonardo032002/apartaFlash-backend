@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,37 +29,37 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/Recibo")
 @CrossOrigin(origins = "*")
 public class ReciboController {
-    
+
     @Autowired
     private ReciboService reciboService;
-    
+
     @Autowired
     private ReciboRepository reciboRepository;
-    
+
     @GetMapping("/")
-    public ResponseEntity<List<Recibo>> queryAll(){
+    public ResponseEntity<List<Recibo>> queryAll() {
         List<Recibo> prs = reciboService.getAll();
         return ResponseEntity.status(HttpStatus.OK).body(prs);
     }
-    
-    @GetMapping("/{id}")
-    public ResponseEntity<Recibo>queryById(@PathVariable Long id){
-        Recibo r = reciboService.getById(id);
-        return ResponseEntity.ok().body(r);
-    }
-    
+
+//    @GetMapping("/{id}")
+//    public ResponseEntity<Recibo> queryById(@PathVariable Long id) {
+//        Recibo r = reciboService.getById(id);
+//        return ResponseEntity.ok().body(r);
+//    }
+
     @PostMapping("/")
-    public ResponseEntity<Boolean> saveProyecto(@RequestBody Recibo recibo){
+    public ResponseEntity<Boolean> saveProyecto(@RequestBody Recibo recibo) {
         reciboService.save(recibo);
         return ResponseEntity.status(HttpStatus.CREATED).body(Boolean.TRUE);
     }
-    
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteOne(@PathVariable long id){
-       reciboService.delete(id);
-       return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    public ResponseEntity<Boolean> deleteOne(@PathVariable long id) {
+        reciboService.delete(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
-    
+
 //      @GetMapping("/recibo/{id}")
 //    public String obtenerMensajeVencimiento(@PathVariable Long id) {
 //        Recibo recibo = reciboRepository.findById(id).orElse(null);
@@ -71,18 +72,51 @@ public class ReciboController {
 //    }
 //    
     @GetMapping("/vencido/{id}")
-    public String obtenerPago(@PathVariable Long id){
+    public String obtenerPago(@PathVariable Long id) {
         Recibo recibo = reciboRepository.findById(id).orElse(null);
-        if (recibo !=null) {
+        if (recibo != null) {
             String mensajePago = recibo.reciboPagado();
             return mensajePago;
-        }else{
+        } else {
             return "recibo no pago";
         }
     }
-    
-       @GetMapping("/totalGenerado")
+
+    @GetMapping("/totalGenerado")
     public Long obtenerTotalGenerado() {
         return reciboRepository.calcularTotalGenerado();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Recibo> actualizarRecibo(@PathVariable Long id, @RequestBody Recibo recibo) {
+        try {
+            Recibo reciboActualizado = reciboService.actualizarRecibo(id, recibo);
+            return ResponseEntity.ok(reciboActualizado);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/pendientes")
+    public List<Recibo> getPendingRecibos() {
+        return reciboService.getPendingRecibos();
+    }
+       @GetMapping("/{id}")
+    public ResponseEntity<?> getCedulaByReciboId(@PathVariable Long id) {
+        // Buscar el recibo por ID
+        Recibo recibo = reciboRepository.findById(id).orElse(null);
+
+        if (recibo == null) {
+            return ResponseEntity.notFound().build(); // Retornar 404 si no se encuentra el recibo
+        }
+
+        // Obtener la cédula del cliente asociado
+        int cedulaCliente = recibo.getCliente().getCedula();
+     
+
+        // Retornar la cédula del cliente
+        return ResponseEntity.ok(cedulaCliente);
+    }
+
+
 }

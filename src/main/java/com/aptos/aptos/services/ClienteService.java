@@ -67,6 +67,7 @@ public class ClienteService {
 
         clienteExistente.setNombre(clienteActualizado.getNombre());
         clienteExistente.setApellido(clienteActualizado.getApellido());
+        clienteExistente.setCorreo(clienteActualizado.getCorreo());
         clienteExistente.setCedula(clienteActualizado.getCedula());
 
         // Actualizar la relación con el apto (JPA se encargará de manejar la relación)
@@ -129,5 +130,8 @@ public class ClienteService {
     
         public List<Object[]> buscarClienteConAptoYRecibosPorNombre(String nombreCliente) {
         return clienteRepository.buscarClienteConAptoYRecibosPorNombre(nombreCliente);
+    }
+            public List<Object[]> buscarClientePorCedula(Integer cedula) {
+        return clienteRepository.buscarPorCedula(cedula);
     }
 }

@@ -87,4 +87,8 @@ public class ClienteController {
         List<Object[]> resultados = clienteService.buscarClienteConAptoYRecibosPorNombre(nombreCliente);
         return ResponseEntity.ok(resultados);
     }
+     @GetMapping("/cedula")
+    public List<Object[]> buscarPorCedula(@RequestParam Integer cedula) {
+        return clienteService.buscarClientePorCedula(cedula);
+    }
 }

@@ -32,6 +32,7 @@ public class Cliente {
     private long id;
     private String nombre;
     private String apellido;
+    private String correo;
     private int cedula;
 
     @JsonBackReference

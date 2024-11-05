@@ -30,12 +30,16 @@ public class Recibo {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+   
     @Temporal(TemporalType.DATE)
     private Date fechaGenerado;
     @Temporal(TemporalType.DATE)
     private Date fechaVencimiento;
     private Boolean pagado;
     private int precio;
+        @JsonBackReference
+    @ManyToOne
+    private Cliente cliente;
 
     @PrePersist
     protected void onCreate() {
@@ -43,9 +47,7 @@ public class Recibo {
         pagado = true;
     }
 
-    @JsonBackReference
-    @ManyToOne
-    private Cliente cliente;
+
 
     public String getMensajeVencimiento() {
         Date hoy = new Date();

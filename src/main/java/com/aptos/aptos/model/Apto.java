@@ -4,6 +4,7 @@
  */
 package com.aptos.aptos.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.Date;
 import java.util.List;
@@ -12,6 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.PostPersist;
+import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -32,18 +35,19 @@ public class Apto {
     @OneToMany(mappedBy = "apto")
     private List<Cliente> clientes;
 
-  
-    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String nombre;
-    private String descripcion;
-    //para usar solo la fecha
-    
-    //asociar recibo con cliente y cliente con apto para que no se vea tan abultado
+    private String edificio;
+    private int codigo;
 
-           public boolean isDisponible() {
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private Date startDate;
+
+    //para usar solo la fecha
+    //asociar recibo con cliente y cliente con apto para que no se vea tan abultado
+    public boolean isDisponible() {
         for (Cliente cliente : clientes) {
             for (Recibo recibo : cliente.getRecibos()) {
                 if (!recibo.isVencido()) {

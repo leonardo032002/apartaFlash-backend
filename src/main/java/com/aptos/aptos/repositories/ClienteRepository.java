@@ -48,6 +48,13 @@ Cliente obtenerClienteConMasRecibos();
        "WHERE c.nombre = :nombreCliente")
 List<Object[]> buscarClienteConAptoYRecibosPorNombre(@Param("nombreCliente") String nombreCliente);
 
+       @Query("SELECT c.nombre, c.apellido, c.cedula, a.nombre, r.fechaGenerado, r.fechaVencimiento, r.id, r.precio " +
+           "FROM Cliente c " +
+           "JOIN c.apto a " +
+           "JOIN c.recibos r " +
+           "WHERE c.cedula = :cedula")
+    List<Object[]> buscarPorCedula(@Param("cedula") Integer cedula);
+
 
 
 
